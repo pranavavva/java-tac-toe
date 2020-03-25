@@ -3,12 +3,12 @@
  */
 package io.github.pranavavva.javatactoe;
 
-public class App {
-    public String getGreeting() {
-        return "Hello world.";
-    }
+import java.awt.*;
 
+public class App {
     public static void main(String[] args) {
-        System.out.println(new App().getGreeting());
+        EventQueue.invokeLater(() -> {
+            GameFrame gameFrame = new GameFrame();
+        });
     }
 }
