@@ -3,12 +3,14 @@
  */
 package io.github.pranavavva.javatactoe;
 
+import io.github.pranavavva.javatactoe.gui.GameFrame;
+
 import java.awt.*;
+import java.util.Scanner;
 
 public class App {
     public static void main(String[] args) {
-        EventQueue.invokeLater(() -> {
-            GameFrame gameFrame = new GameFrame();
-        });
+        Board board = new Board();
+        EventQueue.invokeLater(() -> new GameFrame(board));
     }
 }
