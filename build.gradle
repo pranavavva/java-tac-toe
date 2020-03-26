@@ -44,3 +44,11 @@ test {
 run {
     standardInput = System.in
 }
+
+jar {
+    manifest {
+        attributes (
+            'Main-Class': 'io.github.pranavavva.javatactoe.App'
+        )
+    }
+}
