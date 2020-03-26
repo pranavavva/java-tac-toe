@@ -18,7 +18,7 @@ public class GamePanel extends JPanel {
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
                 this.buttons[i][j] = new JButton();
-                this.buttons[i][j].setText(board.getCellOwner(i, j).getName());
+                this.buttons[i][j].setIcon(null);
                 this.buttons[i][j].putClientProperty("row", i);
                 this.buttons[i][j].putClientProperty("col", j);
                 this.buttons[i][j].addActionListener(gameListener);
@@ -26,4 +26,6 @@ public class GamePanel extends JPanel {
             }
         }
     }
+
+
 }

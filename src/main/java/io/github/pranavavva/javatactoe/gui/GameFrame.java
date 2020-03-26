@@ -7,6 +7,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.net.URL;
+import java.util.Objects;
 
 public class GameFrame extends JFrame {
     private Board board;
@@ -38,17 +40,24 @@ public class GameFrame extends JFrame {
 
     private class GameListener implements ActionListener {
         private int turnsCompleted = 0;
+        private ImageIcon xIcon;
+        private ImageIcon oIcon;
+
+        private GameListener() {
+            xIcon = createImageIcon("x-icon.png", "Icon for Player X");
+            oIcon = createImageIcon("o-icon.png", "Icon for Player O");
+        }
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            if (!winner.equals(Player.UNKNOWN)) return;
+            if (!winner.equals(Player.UNKNOWN) && turnsCompleted < 9) return;
 
 
             JButton button = (JButton) e.getSource();
-            if (!button.getText().equals("-")) return;
+            if (!(button.getIcon() == null)) return;
 
             board.changeCellOwner((int) button.getClientProperty("row"), (int) button.getClientProperty("col"), currentPlayer);
-            button.setText(currentPlayer.getName());
+            button.setIcon((currentPlayer.equals(Player.X) ? xIcon : oIcon));
 
             turnsCompleted++;
             switch (currentPlayer) {
@@ -61,7 +70,9 @@ public class GameFrame extends JFrame {
             }
 
 
-            if (turnsCompleted >= 5) {
+            if (turnsCompleted == 9) {
+                status.setText("Status: Turns Completed: " + turnsCompleted + " | Winner: It's a tie!");
+            } else if (turnsCompleted >= 5) {
                 winner = board.getWinner();
                 switch (winner) {
                     case X:
@@ -78,5 +89,9 @@ public class GameFrame extends JFrame {
                 status.setText("Status: Turns Completed: " + turnsCompleted + " | Winner: Game in progress");
             }
         }
+    }
+
+    private ImageIcon createImageIcon(String path, String description) {
+        return new ImageIcon(Objects.requireNonNull(Thread.currentThread().getContextClassLoader().getResource(path)), description);
     }
 }
