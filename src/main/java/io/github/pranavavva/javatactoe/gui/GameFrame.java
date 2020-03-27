@@ -7,21 +7,19 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.net.URL;
 import java.util.Objects;
 
 public class GameFrame extends JFrame {
     private Board board;
     private GamePanel panel;
     private JTextField status;
-    private GameListener gameListener;
     private Player currentPlayer;
     private Player winner = Player.UNKNOWN;
 
     public GameFrame(Board board) {
         this.board = board;
-        this.gameListener = new GameListener();
-        this.panel = new GamePanel(this.gameListener, this.board);
+        GameListener gameListener = new GameListener();
+        this.panel = new GamePanel(gameListener);
         this.status = new JTextField("Status: Turns Completed: 0 | Winner: Game in progress");
         this.currentPlayer = Player.X;
 
@@ -30,6 +28,18 @@ public class GameFrame extends JFrame {
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.status.setEditable(false);
 
+        JMenuBar menuBar = new JMenuBar();
+        JMenu gameMenu = new JMenu("Game");
+        JMenuItem quitItem = new JMenuItem("Quit");
+        JMenuItem resetItem = new JMenuItem("Reset");
+
+        quitItem.addActionListener((actionEvent) -> System.exit(0));
+
+        gameMenu.add(quitItem);
+        gameMenu.add(resetItem);
+        menuBar.add(gameMenu);
+
+        this.add(menuBar, BorderLayout.NORTH);
         this.add(panel, BorderLayout.CENTER);
         this.add(status, BorderLayout.SOUTH);
 
@@ -70,9 +80,7 @@ public class GameFrame extends JFrame {
             }
 
 
-            if (turnsCompleted == 9) {
-                status.setText("Status: Turns Completed: " + turnsCompleted + " | Winner: It's a tie!");
-            } else if (turnsCompleted >= 5) {
+            if (turnsCompleted >= 5) {
                 winner = board.getWinner();
                 switch (winner) {
                     case X:
@@ -82,7 +90,11 @@ public class GameFrame extends JFrame {
                         status.setText("Status: Turns Completed: " + turnsCompleted + " | Winner: O");
                         break;
                     case UNKNOWN:
-                        status.setText("Status: Turns Completed: " + turnsCompleted + " | Winner: Game in progress");
+                        if (turnsCompleted == 9) {
+                            status.setText("Status: Turns Completed: " + turnsCompleted + " | It's a tie!");
+                        } else {
+                            status.setText("Status: Turns Completed: " + turnsCompleted + " | Winner: Game in progress");
+                        }
                         break;
                 }
             } else {

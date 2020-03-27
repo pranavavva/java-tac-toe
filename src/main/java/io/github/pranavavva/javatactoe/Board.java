@@ -43,6 +43,14 @@ public class Board {
         }
     }
 
+    public void reset() {
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                board[i][j] = new Square();
+            }
+        }
+    }
+
     @Override
     public String toString() {
         StringBuilder output = new StringBuilder();
